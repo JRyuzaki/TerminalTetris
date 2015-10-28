@@ -1,17 +1,16 @@
 GPP = g++
 LIBS = -lncurses
-SRCS = main.cpp Tetromino.cpp
-OBJS = main.o Tetromino.o
+SRCS = main.cpp Tetromino.cpp GameField.cpp
+OBJS = main.o Tetromino.o GameField.o
 ONAME = tetris
 CFLAGS = -std=c++11
 
 all: $(ONAME)
 
-$(ONAME) : $(OBJS)
+$(ONAME):$(OBJS)
 	$(GPP) $(CFLAGS) -o $(ONAME) $(OBJS) $(LIBS)
 
-%.o : %.c
-	$(GPP) $(CFLGAS) -c -o $@ $< $(LIBS)
-
+%.o:%.c
+	$(GPP) $(CFLAGS) -c -o $@ $< $(LIBS)
 clean:
 	rm -f *.o $(ONAME)
