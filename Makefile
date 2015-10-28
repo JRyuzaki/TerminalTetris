@@ -10,7 +10,7 @@ all: $(ONAME)
 $(ONAME):$(OBJS)
 	$(GPP) $(CFLAGS) -o $(ONAME) $(OBJS) $(LIBS)
 
-%.o:%.c
+%.o:%.cpp
 	$(GPP) $(CFLAGS) -c -o $@ $< $(LIBS)
 clean:
 	rm -f *.o $(ONAME)
