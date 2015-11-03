@@ -21,14 +21,22 @@ void GameField::drawCurrentTetromino(Tetromino& tetromino) const{
 		
 		int x = (tetrominoPiece.first);
 
+		//TODO: MAKE THIS OPERATION ELEGANT
 		if(x < 0){
 			int absX = x * -1;
 			if(absX % 2 == 1)
 				--x;
+			else  
+				x -= 2;
+		}else if(x == 0){
+			x += 2;
 		}else{
 			if(x % 2 == 1)
 				++x;
+			else 
+				x += 2;
 		}
+
 		x += tetromino.getX();
 		
 
