@@ -12,7 +12,7 @@ Tetromino Tetromino::createITetromino(float spawnX, float spawnY){
 	iTetromino.addTetrominoPiece(0, std::make_pair(-1,0));
 	iTetromino.addTetrominoPiece(1, std::make_pair(0, 0));
 	iTetromino.addTetrominoPiece(2, std::make_pair(1, 0));
-	iTetromino.addTetrominoPiece(3, std::make_pair(2, 0));
+	iTetromino.addTetrominoPiece(3, std::make_pair(2, 1));
 	return iTetromino;
 }
 
