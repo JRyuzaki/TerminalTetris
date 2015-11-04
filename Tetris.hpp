@@ -2,6 +2,7 @@
 #define TETRIS
 
 #include <utility>
+#include <sstream>
 #include <stdlib.h>
 
 #include "Tetromino.hpp"
@@ -22,9 +23,12 @@ private:
 
 	bool gameIsOver = false;
 
+	long currentScore{0};
+
+	int currentLevel{1};
 public:
 	Tetris(){
-		this->currentTetromino = Tetromino::createITetromino(10, 10);
+		this->currentTetromino = createNewTetromino();
 		setGameFieldBorder();  
 	}
 
@@ -36,8 +40,28 @@ public:
 
 		if(this->currentTetromino.isFalling())
 			gameRenderer.drawCurrentTetromino(this->currentTetromino);
-			
+		
+		drawUI();
 		gameRenderer.updateGameField();
+	}
+
+	void drawUI(){
+		std::string scoreString;
+		std::string levelString;
+
+		std::stringstream sstream;
+		sstream << this->currentScore;
+		sstream >> scoreString;
+
+		std::stringstream sstream2;
+		sstream2 << this->currentLevel;
+		sstream2 >> levelString;
+		levelString = "Level: " + levelString;
+
+		std::string scoreLabel = "Score: " + scoreString;
+		gameRenderer.drawString(75, 1, levelString);
+		gameRenderer.drawString(75, 2, scoreLabel);
+		gameRenderer.drawString(55, 0, "Terminal-Tetris: Created by Jovan Zivanovic");
 	}
 
 	const Tetromino& getCurrentTetromino() const{
@@ -48,10 +72,10 @@ public:
 		for(int y = gameFieldHeight - 1; y >= 0; --y){
 			for(int x = 0; x < gameFieldWidth; ++x){
 				if(y == gameFieldHeight - 1){
-					this->gameField[y][x] = 1;	
+					this->gameField[y][x] = 99;	
 				}else{
 					if(x < borderThickness || x > gameFieldWidth - borderThickness - 1){
-						gameField[y][x] = 1;
+						gameField[y][x] = 99;
 					}
 					else{
 						gameField[y][x] = 0;
@@ -79,6 +103,19 @@ public:
 		rotateTetromino();
 	}
 
+	void moveHorizontallyBy(int xMovement);
+
+	void incrementCurrentScore(int addition){
+		this->currentScore += addition;
+	}
+
+	const long getCurrentScore() const{
+		return this->currentScore;
+	}
+
+	void doubleTetrominoFallingSpeed(){
+		this->currentTetromino.setFallingSpeed(10 + this->currentTetromino.getFallingSpeed());
+	}
 
 private:
 	void updateTetromino();
@@ -86,5 +123,9 @@ private:
 	void implementIntoGameField(Tetromino& tetromino);
 	void rotateTetromino();
 	const Tetromino createNewTetromino();
+	void checkGameFieldForFullLine();
+	const bool checkLevelForIncrement() const;
+	void incrementLevel();
+	const bool checkForGameOver();
 };
 #endif 
