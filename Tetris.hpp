@@ -59,8 +59,9 @@ public:
 		levelString = "Level: " + levelString;
 
 		std::string scoreLabel = "Score: " + scoreString;
-		gameRenderer.drawString(75, 1, levelString);
-		gameRenderer.drawString(75, 2, scoreLabel);
+		gameRenderer.drawString(55, 1, "Use the W,A,S,D Keys");
+		gameRenderer.drawString(75, 2, levelString);
+		gameRenderer.drawString(75, 3, scoreLabel);
 		gameRenderer.drawString(55, 0, "Terminal-Tetris: Created by Jovan Zivanovic");
 	}
 
