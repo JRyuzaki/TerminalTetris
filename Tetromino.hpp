@@ -5,14 +5,26 @@
 #include <stdio.h>
 #include <math.h>
 
+#define CYAN 1
+#define BLUE 2
+#define WHITE 3
+#define YELLOW 4
+#define GREEN 5
+#define MAGENTA 6
+#define RED 7
+
 class Tetromino{
 protected:
 	float positionX;
 	float positionY;
 
 	int rotation{0};
+	bool rotateable{true};
 
-	bool fallingState = true;
+	int fallingSpeed{1};
+	bool fallingState{true};
+
+	int colorID;
 
 public:
 	std::pair<int, int> tetrominoPiece[4];
@@ -31,6 +43,10 @@ public:
 		rotation = other.getRotation();
 
 		fallingState = other.isFalling();
+		rotateable = other.isRotateable();
+
+		colorID = other.getColorID();
+		fallingSpeed = other.getFallingSpeed();
 
 		for(int i = 0; i < 4; ++i){
 			std::pair<int, int> otherPiece = other.getTetrominoPiece(i);
@@ -76,6 +92,14 @@ public:
 		return newTetromino;
 	}
 
+	void setColorID(const int colorID){
+		this->colorID = colorID;
+	}
+
+	const int getColorID() const{
+		return this->colorID;
+	}
+
 
 	int getRotation() const {
 		return this->rotation;
@@ -97,12 +121,18 @@ public:
 	} 
 
 	void rotateRight(){
+		if(!this->rotateable)
+			return;
+
 		++this->rotation;
 		if(this->rotation > 3)
 			this->rotation = 0;
 	}
 
 	void rotateLeft(){
+		if(!this->rotateable)
+			return;
+
 		--this->rotation;
 		if(this->rotation < 0)
 			this->rotation = 3;
@@ -125,6 +155,22 @@ public:
 			rotatedTetromino.addTetrominoPiece(i, std::make_pair(newX, newY));
 		}
 		return rotatedTetromino;
+	}
+
+	const bool isRotateable() const{
+		return this->rotateable;
+	}
+
+	void setRotateable(const bool rotateable){
+		this->rotateable = rotateable;
+	}
+
+	const int getFallingSpeed() const{
+		return this->fallingSpeed;
+	}
+
+	void setFallingSpeed(const int fallingSpeed){
+		this->fallingSpeed = fallingSpeed;
 	}
 
 	static Tetromino createITetromino(float spawnX, float spawnY);
