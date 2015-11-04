@@ -6,9 +6,13 @@ void GameField::drawGameField(int gameField[][52]) const{
 	for(int y = 0; y < gameFieldHeight; ++y){
 		for(int x = 0; x < gameFieldWidth; ++x){
 			char currentFieldContent = gameField[y][x];
- 
-			if(currentFieldContent != 0){
-				color_set(currentFieldContent, 0);
+ 		
+ 			if(currentFieldContent != 0){
+				if(currentFieldContent != 99){
+					color_set(currentFieldContent, 0);
+				}else{
+					color_set(8, 0);
+				}
 				mvaddstr(y, x, " ");
 			}
 		}
@@ -18,32 +22,11 @@ void GameField::drawGameField(int gameField[][52]) const{
 void GameField::drawCurrentTetromino(Tetromino& tetromino) const{
 	for(int i = 0; i < tetromino.getTetrominoPieceCount() ; ++i){
 		std::pair<int, int> tetrominoPiece = tetromino.getTetrominoPiece(i);
-		
-		int x = (tetrominoPiece.first);
-
-		//TODO: MAKE THIS OPERATION ELEGANT
-		if(x < 0){
-			int absX = x * -1;
-			if(absX % 2 == 1)
-				--x;
-			else  
-				x -= 2;
-		}else if(x == 0){
-			x += 2;
-		}else{
-			if(x % 2 == 1)
-				++x;
-			else 
-				x += 2;
-		}
-
-		x += tetromino.getX();
-		
-
-		int y = tetromino.getY() + tetrominoPiece.second;
+		int x = tetromino.getX() + 2 * tetrominoPiece.first;	//TODO: CONNECT TO TETRIS.HPP FOR THE THICKNESS 
+		int y = tetromino.getY() + 1 * tetrominoPiece.second;
 
 
-		color_set(2, 0);
+		color_set(tetromino.getColorID(), 0);
 		for(int height = 0; height < 1; ++height){
 			for(int width = 0; width < 2; ++width){
 				mvaddstr(y + height, x + width, " ");
