@@ -9,28 +9,8 @@
 
 #define GAME_UPDATE_TIME 100
 
-void keyboardInput(Tetris& tetris){
-	while(!tetris.isGameOver()){
-		int pressedKey = getchar();
-		switch(pressedKey){
-			//case 'a':
-			//	tetris.moveCurrentBlockHorizontal(-2);
-			//	break;
-			//case 'd':
-			//	tetris.moveCurrentBlockHorizontal(2);
-			//	break;
-			//case 's':
-			//	tetris.changeFallingSpeed(0.12);
-			//	break;
-			case 'q':
-				tetris.rotateRight();
-				break;
-			case 'e':
-				tetris.rotateLeft();
-				break;
-		}
-	}
-}
+void keyboardInput(Tetris&);
+void drawGameOverScreen(void);
 
 int main(){
 	srand(time(NULL));
@@ -45,7 +25,40 @@ int main(){
 		usleep(GAME_UPDATE_TIME);
 	}
 
+	drawGameOverScreen();
 	keyboardInputThread.join();
+
+	getchar();
 	endwin();
 	return 0;
 }      
+
+
+void keyboardInput(Tetris& tetris){
+	while(!tetris.isGameOver()){
+		int pressedKey = getchar();
+		switch(pressedKey){
+			case 'a':
+				tetris.moveHorizontallyBy(-2);
+				break;
+			case 'd':
+				tetris.moveHorizontallyBy(2);
+				break;
+			case 's':
+				tetris.doubleTetrominoFallingSpeed();
+				break;
+			case 'q':
+				tetris.rotateRight();
+				break;
+			case 'e':
+				tetris.rotateLeft();
+				break;
+		}
+	}
+}
+
+void drawGameOverScreen(){
+	erase();
+	mvaddstr(0, 0, "GAME OVER");
+	refresh();
+}
